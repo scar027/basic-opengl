@@ -25,7 +25,7 @@ int main()
     return -1;
   }
 
-  glClearColor(0.75f, 0.5f, 0.5f, 1.0f); // setting default colour when cleared
+   glClearColor(0.75f, 0.5f, 0.5f, 1.0f); // setting default colour when cleared
 
   // get viewport size
   int w, h;
