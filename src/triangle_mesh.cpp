@@ -8,16 +8,17 @@ TriangleMesh::TriangleMesh()
     -1.0f, -1.0f, 0.0f, 
      1.0f, -1.0f, 0.0f, 
     -1.0f,  1.0f, 0.0f,
-
-    -1.0f, 1.0f, 0.0f, 
-     1.0f, -1.0f, 0.0f, 
      1.0f, 1.0f, 0.0f
   };
 
   std::vector<int> colorIndices = {
-    0, 1, 2, 2, 1, 3
+    0, 1, 2, 3
   };
   
+  std::vector<int> elementIndices = {
+    0, 1, 2, 2, 1, 3
+  };
+
   vertex_count = 6;
 
   glGenVertexArrays(1, &VAO); // VAO: Vertex Array Object
@@ -44,16 +45,21 @@ TriangleMesh::TriangleMesh()
   // here we used a stride of 4 since 1 int is 4 bytes
   glEnableVertexAttribArray(1);
 
+  //element buffer
+  glGenBuffers(1, &EBO);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementIndices.size() * sizeof(float), elementIndices.data(), GL_STATIC_DRAW);
 }
 
 
 void TriangleMesh::draw() {
     glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+    glDrawElements(GL_TRIANGLES, vertex_count, GL_UNSIGNED_INT, 0);
     // parameters of the above fn are the draw mode(triangle here), first vertex, no. of vertices
 }
 
 TriangleMesh::~TriangleMesh() {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(2, VBOs.data());
+    glDeleteBuffers(1, &EBO);
 }
