@@ -1,4 +1,5 @@
 #include "config.h"
+#include "triangle_mesh.h"
 
 unsigned int make_module(const std::string& filepath, unsigned int module_type);
 
@@ -26,6 +27,13 @@ int main()
 
   glClearColor(0.75f, 0.5f, 0.5f, 1.0f); // setting default colour when cleared
 
+  // get viewport size
+  int w, h;
+  glfwGetFramebufferSize(window, &w, &h);
+  glViewport(0,0,w,h);
+
+  TriangleMesh* triangle = new TriangleMesh();
+
   unsigned int shader = make_shader("../src/shaders/vertex.txt", "../src/shaders/fragment.txt");
 
   while (!glfwWindowShouldClose(window))
@@ -33,6 +41,7 @@ int main()
     glfwPollEvents();
     glClear(GL_COLOR_BUFFER_BIT); // clearing the colour buffer
     glUseProgram(shader);
+    triangle -> draw();
     glfwSwapBuffers(window);
   }
 
